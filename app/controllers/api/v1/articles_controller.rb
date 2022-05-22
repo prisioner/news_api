@@ -1,7 +1,14 @@
 class Api::V1::ArticlesController < ApplicationController
   before_action :set_article,
     only: %i[show update destroy add_favorite remove_favorite]
-  after_action :verify_authorized
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
+
+  def index
+    articles = policy_scope(Article.all)
+
+    render json: articles, each_serializer: ArticleCollectionSerializer
+  end
 
   def create
     authorize Article
