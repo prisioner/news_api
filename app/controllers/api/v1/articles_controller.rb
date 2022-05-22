@@ -5,7 +5,7 @@ class Api::V1::ArticlesController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    articles = policy_scope(Article.all)
+    articles = policy_scope(ArticleQuery.call(params))
 
     render json: articles, each_serializer: ArticleCollectionSerializer
   end
