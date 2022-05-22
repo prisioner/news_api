@@ -1,4 +1,5 @@
 class Api::V1::ArticlesController < ApplicationController
+  before_action :authenticate_user!, only: %i[create]
   before_action :set_article, only: %i[show]
 
   def create
