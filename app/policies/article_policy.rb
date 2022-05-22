@@ -14,4 +14,12 @@ class ArticlePolicy < ApplicationPolicy
   def destroy?
     update?
   end
+
+  def add_favorite?
+    user.present? && record.published?
+  end
+
+  def remove_favorite?
+    user.present?
+  end
 end
