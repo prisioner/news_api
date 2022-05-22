@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :articles, dependent: :destroy
   has_many :favorite_articles, dependent: :destroy
+  has_many :viewed_articles, dependent: :destroy
 
   scope :authors, -> {
     joins(:articles).where(articles: { published: true }).distinct

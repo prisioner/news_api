@@ -23,6 +23,10 @@ class ArticlePolicy < ApplicationPolicy
     user.present?
   end
 
+  def unread?
+    user.present?
+  end
+
   class Scope
     def initialize(user, scope)
       @user  = user
