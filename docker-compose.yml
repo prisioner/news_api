@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:12.11-alpine
+    volumes:
+      - ./tmp/db:/pgdata
+    environment:
+      POSTGRES_PASSWORD: password
+      PGDATA: /pgdata
+    networks:
+      - news_api
+
+  backend:
+    tty: true
+    stdin_open: true
+    build: ./
+    entrypoint: "/usr/bin/entrypoint.sh"
+    command: bundle exec rails server -p 3000 -b 0.0.0.0
+    volumes:
+      - ./:/app
+    environment:
+      RAILS_ENV: development
+      DB_HOST: db
+      DB_NAME: news_api_development
+      DB_PASSWORD: news_api_password
+      DB_POOL: 5
+      DB_PORT: 5432
+      DB_TEST_NAME: news_api_test
+      DB_USERNAME: news_api_user
+      PGPASSWORD: password
+    ports:
+      - "3000:3000"
+    networks:
+      - news_api
+    depends_on:
+      - db
+
+networks:
+  news_api:
+    driver: bridge
